@@ -1,0 +1,111 @@
+﻿@using Portal.Web.Models
+@model Portal.Web.Models.LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>ورود به سیستم</title>
+    @Styles.Render("~/Content/bootstrap")
+    <link href="~/Content/login.css" rel="stylesheet" />
+
+
+</head>
+<body>
+    <div class="container body-content">
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="container table-wrapper">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3 col-lg-5 col-lg-offset-3">
+                        <div class="panel panel-login">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <a href="/" class="active" id="login-form-link">ورود به سامانه</a>
+                                </div>
+                                <hr>
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <form id="login-form" method="post" role="form" style="display: block;">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <i class="glyphicon glyphicon-user"></i>
+                                                    </div>
+                                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                                </div>
+                                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <i class="glyphicon glyphicon-lock"></i>
+                                                    </div>
+                                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                                </div>
+                                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <input type="submit" style="background-color: #1ea5ed" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="ورود">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <p>
+                                                @Html.ActionLink("ثبت نام", "Register") | 
+                                                @Html.ActionLink("بازیابی کلمه عبور", "ForgotPassword")
+                                            </p>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <script>
+            $(function () {
+                $('#login-form-link').click(function (e) {
+                    $("#login-form").delay(100).fadeIn(100);
+                    $("#register-form").fadeOut(100);
+                    $('#register-form-link').removeClass('active');
+                    $(this).addClass('active');
+                    e.preventDefault();
+                });
+                $('#register-form-link').click(function (e) {
+                    $("#register-form").delay(100).fadeIn(100);
+                    $("#login-form").fadeOut(100);
+                    $('#login-form-link').removeClass('active');
+                    $(this).addClass('active');
+                    e.preventDefault();
+                });
+            });
+            $('.btn').on('click', function () {
+                var $this = $(this);
+                $this.button('loading');
+                setTimeout(function () {
+                    $this.button('reset');
+                }, 8000);
+            });
+        </script>
+
+
+    </div>
+
+    @Scripts.Render("~/bundles/common")
+    @Scripts.Render("~/bundles/adminlayout")
+
+</body>
+</html>

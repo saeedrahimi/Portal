@@ -1,0 +1,146 @@
+﻿@{
+    var userAvatar = File.Exists(Server.MapPath("~/Content/Avatars/" + User.Identity.Name + ".png")) ? "~/Content/Avatars/" + User.Identity.Name + ".png" :
+        "~/Content/avatar.png";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>@ViewBag.Title |  رایان بورس </title>
+    @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/Content/themes/base/jqueryUi")
+    @Styles.Render("~/Content/AdminLTE/admintheme")
+    @Styles.Render("~/Content/admin")
+    @RenderSection("styles", false)
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+@if (Request.IsAuthenticated)
+{
+    <header class="main-header">
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>RB</b></span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>رایان بــورس</b></span>
+        </a>
+
+        <!-- Header Navbar -->
+        <nav class="navbar navbar-static-top" role="navigation">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            <!-- Navbar Right Menu -->
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- User Account Menu -->
+                    <li class="dropdown user user-menu">
+                        <!-- Menu Toggle Button -->
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <!-- The user image in the navbar-->
+                            <img src="@Url.Content(userAvatar)" class="user-image" alt="User Image">
+                            <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                            <span class="hidden-xs">@User.Identity.Name</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- The user image in the menu -->
+                            <li class="user-header">
+                                <img src="@Url.Content(userAvatar)" class="img-circle" alt="User Image">
+
+                                <p>
+                                    @User.Identity.Name
+                                </p>
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a href="@Url.Action("ForgotPassword", "Account")" class="btn btn-default btn-flat">تغییر کلمه عبور</a>
+                                </div>
+                                <div class="pull-right">
+                                    @using (Html.BeginForm("LogOff", "Account"))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <button class="btn btn-danger btn-flat">خروج</button>
+                                    }
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+}
+    <!-- Left side column. contains the logo and sidebar -->
+    @if (Request.IsAuthenticated)
+    {
+        <aside class="main-sidebar">
+
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+
+                <ul class="sidebar-menu">
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-pie-chart"></i>
+                            <span>اطلاعیه ها</span>
+                            <span class="pull-left">
+                                <i class="fa fa-angle-left pull-left"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-circle-o"></i> در دست تهیه</a></li>
+                            <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-circle-o"></i> دریافت</a></li>
+                            <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-circle-o"></i> ارسالی</a></li>
+                        </ul>
+                    </li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>
+                            <a href="@Url.Action("Index", "CompanyGroup")">
+                                <i class="fa fa-barcode"></i> <span>گروه صنعت های سامانه</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "BulletinTypes")">
+                                <i class="fa fa-dashboard"></i> <span>دسته‌بندی اطلاعیه‌ها</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "UsersAdmin")">
+                                <i class="fa fa-users"></i> <span>کاربران</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "RolesAdmin")">
+                                <i class="fa fa-users"></i> <span>نقش کاربران</span>
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+                <!-- /.sidebar-menu -->
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+    }
+    <div class="content-wrapper" style="min-height: 600px;">
+        @RenderBody()
+    </div>
+
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 2.4.0
+        </div>
+        <strong>Copyright © 2018 Saeed Rahimi - AdminLTE theme</strong>
+    </footer>
+    <input id="message" type="hidden" value="@TempData["message"]"/>
+</div>
+    @Scripts.Render("~/bundles/common")
+    @Scripts.Render("~/bundles/adminlayout")
+    @RenderSection("scripts", false)
+</body>
+</html>

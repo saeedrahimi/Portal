@@ -1,0 +1,51 @@
+﻿@model Portal.Dto.Dtos.Company.CompanyGroupEditDto
+@{
+    ViewBag.Title = "ویرایش گروه صنعت";
+}
+<h2>@ViewBag.Title</h2>
+<div class="row">
+<div class="col-md-6">
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Title)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Description)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("دسترسی به اطلاعیه‌های", new { @class = "control-label col-md-2" })
+            <span class=" col-md-10">
+                @foreach (var item in Model.TypesList)
+                {
+                    <input type="checkbox" name="SelectedTypes" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                    @Html.Label(item.Text, new { @class = "control-label" })
+                }
+            </span>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="ویرایش" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+    </div>
+    </div>
+    @Html.ActionLink("بازگشت به لیست", "Index")
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
